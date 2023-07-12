@@ -32,12 +32,12 @@ public class AuthService {
 
     public ResponseJWT login(RequestAuth requestAuth) {
         try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestAuth.getEmail(), requestAuth.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestAuth.getLogin(), requestAuth.getPassword()));
         } catch (ErrorBadCredentials e)
         {
             throw new ErrorBadCredentials();
         }
-        User user = userRepository.findUserByEmail(requestAuth.getEmail());
+        User user = userRepository.findUserByLogin(requestAuth.getLogin());
         String token = jwtUtils.generateToken(user);
         authRepository.saveAuthenticationUser(token, user);
         return new ResponseJWT(token);

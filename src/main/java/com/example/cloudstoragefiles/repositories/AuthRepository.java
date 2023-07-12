@@ -19,4 +19,8 @@ public class AuthRepository {
             mapAuthenticationUsers.remove(authToken);
     }
 
+    public User getUserByToken (String authToken) {
+        return mapAuthenticationUsers.get(authToken);
+    }
+
 }

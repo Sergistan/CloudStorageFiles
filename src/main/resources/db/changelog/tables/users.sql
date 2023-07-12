@@ -1,9 +1,9 @@
 create table users(
     id BIGSERIAL PRIMARY KEY,
-    email varchar (256) not null,
+    login varchar (256) not null,
     password varchar (256) not null
 );
 
-insert into users (email, password) VALUES ('user1@yandex.ru','user123');
+insert into users (login, password) VALUES ('user1@yandex.ru','$2y$10$x6pkJCJ3wLzG3cHBFa5eieifaLrUg6dfjlnH6mMnoJuVkfgZj6MYi');
 
-insert into users (email, password) VALUES ('user2@yandex.ru','user456');
+insert into users (login, password) VALUES ('user2@yandex.ru','$2y$10$A3HKkN2KljobzfDqOZKb1OSXjGtx3OpceTrxZJXGCQqLUuaJjzsXu');

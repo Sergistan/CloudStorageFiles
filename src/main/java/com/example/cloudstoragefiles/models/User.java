@@ -21,7 +21,7 @@ public class User implements UserDetails {
     private Long id;
 
     @Column
-    private String email;
+    private String login;
 
     @Column
     private String password;
@@ -33,7 +33,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return login;
     }
 
     @Override

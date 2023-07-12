@@ -1,9 +1,6 @@
 package com.example.cloudstoragefiles.jwt;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
-
 import com.example.cloudstoragefiles.services.UserService;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,7 +47,7 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userService.loadUserByUsername(username);
+                UserDetails userDetails = userService.loadUserByUsername(username);
 
                 if (jwtUtils.validateToken(jwtToken, userDetails)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

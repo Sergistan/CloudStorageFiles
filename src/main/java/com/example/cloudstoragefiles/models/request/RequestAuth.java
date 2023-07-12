@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 public class RequestAuth {
 
     @NotEmpty
-    private String email;
+    private String login;
     @NotEmpty
     private String password;
 }
