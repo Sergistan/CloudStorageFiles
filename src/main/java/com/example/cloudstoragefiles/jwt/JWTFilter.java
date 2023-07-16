@@ -49,7 +49,7 @@ public class JWTFilter extends OncePerRequestFilter {
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userService.loadUserByUsername(username);
 
-                if (jwtUtils.validateToken(jwtToken, userDetails)) {
+                if (jwtUtils.isValidateToken(jwtToken, userDetails)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
@@ -64,37 +64,5 @@ public class JWTFilter extends OncePerRequestFilter {
 
     }
 
-
-
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-//        String authHeader = httpServletRequest.getHeader("auth-token");
-//
-//        if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
-//            String jwt = authHeader.substring(7);
-//
-//            if (jwt.isBlank()) {
-//                httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST,
-//                        "Invalid JWT Token in Bearer Header");
-//            } else {
-//                try {
-//                    String username = jwtUtils.validateTokenAndRetrieveClaim(jwt);
-//                    UserDetails userDetails = userService.loadUserByUsername(username);
-//
-//                    UsernamePasswordAuthenticationToken authToken =
-//                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//
-//                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
-//                        SecurityContextHolder.getContext().setAuthentication(authToken);
-//                    }
-//                } catch (JWTVerificationException exc) {
-//                    httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST,
-//                            "Invalid JWT Token");
-//                }
-//            }
-//        }
-//
-//        filterChain.doFilter(httpServletRequest, httpServletResponse);
-//    }
 
 

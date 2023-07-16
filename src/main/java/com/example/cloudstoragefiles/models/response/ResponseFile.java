@@ -8,5 +8,4 @@ import lombok.Data;
 public class ResponseFile {
     private String filename;
     private long size;
-
 }

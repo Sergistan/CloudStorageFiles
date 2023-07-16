@@ -31,8 +31,7 @@ public class AuthService {
     public ResponseJWT login(RequestAuth requestAuth) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestAuth.getLogin(), requestAuth.getPassword()));
-        } catch (ErrorBadCredentials e)
-        {
+        } catch (ErrorBadCredentials e) {
             throw new ErrorBadCredentials();
         }
         User user = userRepository.findUserByLogin(requestAuth.getLogin());

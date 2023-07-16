@@ -10,5 +10,4 @@ public class ResponseJWT {
 
     @JsonProperty("auth-token")
     private final String authToken;
-
 }

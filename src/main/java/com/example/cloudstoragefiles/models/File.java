@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,16 +19,19 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (name = "filename")
+    @Column (name = "filename", unique = true)
+    @NotNull
     private String filename;
 
     @Column (name = "edited_at")
     private LocalDateTime editedAt;
 
     @Column (name = "size")
+    @NotNull
     private Long size;
 
     @Column (name = "file_content")
+    @NotNull
     private byte[] fileContent;
 
     @ManyToOne

@@ -47,9 +47,10 @@ public class FileService {
         if (user == null) {
             throw new ErrorUnauthorized();
         }
-
         long deletedCount = fileRepository.deleteByUserAndFilename(user, filename);
-
+        if (user.getUserFiles().stream().noneMatch(x -> x.getFilename().equals(filename))) {
+            throw new ErrorInputData();
+        }
         if (deletedCount == 0) {
             throw new ErrorDeleteFile();
         }
@@ -91,18 +92,20 @@ public class FileService {
         if (user == null) {
             throw new ErrorUnauthorized();
         }
+        if (limit == 0) {
+            throw new ErrorInputData();
+        }
         List<File> allFilesByUser = fileRepository.findAllByUser(user);
-        List<ResponseFile> responseFiles = allFilesByUser.stream().map(x -> new ResponseFile(x.getFilename(), x.getSize())).toList();
         if (allFilesByUser == null) {
             throw new ErrorGettingFileList();
         }
-        return responseFiles;
+        return allFilesByUser.stream().map(x -> new ResponseFile(x.getFilename(), x.getSize())).toList();
     }
 
     public User getUserByToken(String authToken) {
         if (authToken.startsWith("Bearer ")) {
             String tokenWithoutBearer = authToken.substring(7);
-            return authRepository.getUserByToken(tokenWithoutBearer);
+            return authRepository.getAuthenticationUserByToken(tokenWithoutBearer);
         } else return null;
     }
 }
