@@ -5,14 +5,18 @@ import com.example.cloudstoragefiles.exceptions.ErrorInputData;
 import com.example.cloudstoragefiles.exceptions.ErrorUnauthorized;
 import com.example.cloudstoragefiles.models.File;
 import com.example.cloudstoragefiles.models.User;
+import com.example.cloudstoragefiles.models.request.RequestEditFileName;
+import com.example.cloudstoragefiles.models.response.ResponseFile;
 import com.example.cloudstoragefiles.repositories.AuthRepository;
 import com.example.cloudstoragefiles.repositories.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class FileService {
@@ -26,33 +30,44 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-    public boolean uploadFile(String authToken, String filename, MultipartFile multipartFile) {
+    @Transactional
+    public void uploadFile(String authToken, String filename, MultipartFile multipartFile) {
         User user = getUserByToken(authToken);
         if (user == null) {
             throw new ErrorUnauthorized();
         }
         try {
-            File uploadFile = new File(filename, LocalDateTime.now(), multipartFile.getSize(), multipartFile.getBytes());
+            File uploadFile = new File(filename, LocalDateTime.now(), multipartFile.getSize(), multipartFile.getBytes(), user);
             fileRepository.save(uploadFile);
-            System.out.println(fileRepository.findAll());
-            return true;
         } catch (IOException e) {
             throw new ErrorInputData();
         }
     }
 
+    @Transactional
     public void deleteFile(String authToken, String filename) {
         User user = getUserByToken(authToken);
         if (user == null) {
             throw new ErrorUnauthorized();
         }
-        fileRepository.deleteByFilename(filename);
-        File deleteFile = fileRepository.findByFilename(filename);
-        if (deleteFile != null) {
+
+        long deletedCount = fileRepository.deleteByUserAndFilename(user, filename);
+
+        if (deletedCount == 0) {
             throw new ErrorDeleteFile();
         }
+    }
 
+    public byte[] downloadFile(String authToken, String filename) {
+        return null;
+    }
 
+    public void editFile(String authToken, String filename, RequestEditFileName requestEditFileName) {
+
+    }
+
+    public List<ResponseFile> getAllFiles(String authToken, Integer limit) {
+        return null;
     }
 
     public User getUserByToken(String authToken) {
@@ -61,6 +76,4 @@ public class FileService {
             return authRepository.getUserByToken(tokenWithoutBearer);
         } else return null;
     }
-
-
 }

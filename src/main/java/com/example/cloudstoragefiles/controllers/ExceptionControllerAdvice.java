@@ -1,9 +1,6 @@
 package com.example.cloudstoragefiles.controllers;
 
-import com.example.cloudstoragefiles.exceptions.ErrorBadCredentials;
-import com.example.cloudstoragefiles.exceptions.ErrorDeleteFile;
-import com.example.cloudstoragefiles.exceptions.ErrorInputData;
-import com.example.cloudstoragefiles.exceptions.ErrorUnauthorized;
+import com.example.cloudstoragefiles.exceptions.*;
 import com.example.cloudstoragefiles.models.response.ResponseError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +31,12 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(ErrorDeleteFile.class)
     public ResponseEntity<ResponseError> handlerDeleteFile() {
         ResponseError errorResponse = new ResponseError("Error Delete File", 0);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ErrorUploadFile.class)
+    public ResponseEntity<ResponseError> handlerUploadFile() {
+        ResponseError errorResponse = new ResponseError("Error Upload File", 0);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
