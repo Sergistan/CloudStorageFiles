@@ -22,32 +22,32 @@ public class FileStorageController {
 
 
     @PostMapping("/file")
-    public ResponseEntity<String> uploadFile (@RequestHeader("auth-token") String authToken, @RequestParam ("filename") String filename, MultipartFile file) {
+    public ResponseEntity<String> uploadFile(@RequestHeader("auth-token") String authToken, @RequestParam("filename") String filename, MultipartFile file) {
         fileService.uploadFile(authToken, filename, file);
         return ResponseEntity.ok("Success upload");
     }
 
     @DeleteMapping("/file")
-    public ResponseEntity<String> deleteFile (@RequestHeader("auth-token") String authToken, @RequestParam ("filename") String filename) {
+    public ResponseEntity<String> deleteFile(@RequestHeader("auth-token") String authToken, @RequestParam("filename") String filename) {
         fileService.deleteFile(authToken, filename);
         return ResponseEntity.ok("Success delete");
     }
 
     @GetMapping("/file")
-    public ResponseEntity<?> downloadFile (@RequestHeader("auth-token") String authToken, @RequestParam ("filename") String filename) {
-        byte [] file = fileService.downloadFile(authToken, filename);
+    public ResponseEntity<?> downloadFile(@RequestHeader("auth-token") String authToken, @RequestParam("filename") String filename) {
+        byte[] file = fileService.downloadFile(authToken, filename);
         return ResponseEntity.ok(file);
     }
 
     @PutMapping("/file")
-    public ResponseEntity<String> editFile (@RequestHeader("auth-token") String authToken, @RequestParam ("filename") String filename, @RequestBody RequestEditFileName requestEditFileName) {
+    public ResponseEntity<String> editFile(@RequestHeader("auth-token") String authToken, @RequestParam("filename") String filename, @RequestBody RequestEditFileName requestEditFileName) {
         fileService.editFile(authToken, filename, requestEditFileName);
         return ResponseEntity.ok("Edit file name");
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<ResponseFile>> getAllFiles (@RequestHeader("auth-token") String authToken, @RequestParam ("limit") Integer limit) {
-       List<ResponseFile> rp = fileService.getAllFiles(authToken, limit);
+    public ResponseEntity<List<ResponseFile>> getAllFiles(@RequestHeader("auth-token") String authToken, @RequestParam("limit") Integer limit) {
+        List<ResponseFile> rp = fileService.getAllFiles(authToken, limit);
         return ResponseEntity.ok(rp);
     }
 

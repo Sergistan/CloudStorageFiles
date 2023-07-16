@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class ResponseFile {
     private String filename;
-    private int size;
+    private long size;
 
 }

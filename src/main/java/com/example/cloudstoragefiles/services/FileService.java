@@ -1,8 +1,6 @@
 package com.example.cloudstoragefiles.services;
 
-import com.example.cloudstoragefiles.exceptions.ErrorDeleteFile;
-import com.example.cloudstoragefiles.exceptions.ErrorInputData;
-import com.example.cloudstoragefiles.exceptions.ErrorUnauthorized;
+import com.example.cloudstoragefiles.exceptions.*;
 import com.example.cloudstoragefiles.models.File;
 import com.example.cloudstoragefiles.models.User;
 import com.example.cloudstoragefiles.models.request.RequestEditFileName;
@@ -19,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 public class FileService {
 
     private final AuthRepository authRepository;
@@ -30,7 +29,6 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-    @Transactional
     public void uploadFile(String authToken, String filename, MultipartFile multipartFile) {
         User user = getUserByToken(authToken);
         if (user == null) {
@@ -44,7 +42,6 @@ public class FileService {
         }
     }
 
-    @Transactional
     public void deleteFile(String authToken, String filename) {
         User user = getUserByToken(authToken);
         if (user == null) {
@@ -59,15 +56,47 @@ public class FileService {
     }
 
     public byte[] downloadFile(String authToken, String filename) {
-        return null;
+        User user = getUserByToken(authToken);
+        if (user == null) {
+            throw new ErrorUnauthorized();
+        }
+        File file = fileRepository.findByUserAndFilename(user, filename);
+        if (file == null) {
+            throw new ErrorInputData();
+        }
+        byte[] fileContent = file.getFileContent();
+        if (fileContent == null) {
+            throw new ErrorUploadFile();
+        }
+        return fileContent;
     }
 
     public void editFile(String authToken, String filename, RequestEditFileName requestEditFileName) {
-
+        User user = getUserByToken(authToken);
+        if (user == null) {
+            throw new ErrorUnauthorized();
+        }
+        File file = fileRepository.findByUserAndFilename(user, filename);
+        if (file == null) {
+            throw new ErrorInputData();
+        }
+        fileRepository.setNewFilenameByUserAndFilename(requestEditFileName.getFilename(), user, filename);
+        if (filename.equals(requestEditFileName.getFilename())) {
+            throw new ErrorUploadFile();
+        }
     }
 
     public List<ResponseFile> getAllFiles(String authToken, Integer limit) {
-        return null;
+        User user = getUserByToken(authToken);
+        if (user == null) {
+            throw new ErrorUnauthorized();
+        }
+        List<File> allFilesByUser = fileRepository.findAllByUser(user);
+        List<ResponseFile> responseFiles = allFilesByUser.stream().map(x -> new ResponseFile(x.getFilename(), x.getSize())).toList();
+        if (allFilesByUser == null) {
+            throw new ErrorGettingFileList();
+        }
+        return responseFiles;
     }
 
     public User getUserByToken(String authToken) {
