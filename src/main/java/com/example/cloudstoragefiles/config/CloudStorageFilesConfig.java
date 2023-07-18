@@ -28,8 +28,6 @@ import java.util.List;
 public class CloudStorageFilesConfig {
     private final UserService userService;
     private final JWTFilter jwtFilter;
-
-
     @Value("${cors.credentials}")
     private Boolean credentials;
 

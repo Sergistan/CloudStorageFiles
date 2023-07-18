@@ -47,10 +47,10 @@ public class FileService {
         if (user == null) {
             throw new ErrorUnauthorized();
         }
-        long deletedCount = fileRepository.deleteByUserAndFilename(user, filename);
         if (user.getUserFiles().stream().noneMatch(x -> x.getFilename().equals(filename))) {
             throw new ErrorInputData();
         }
+        long deletedCount = fileRepository.deleteByUserAndFilename(user, filename);
         if (deletedCount == 0) {
             throw new ErrorDeleteFile();
         }
