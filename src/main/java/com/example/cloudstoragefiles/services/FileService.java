@@ -47,7 +47,7 @@ public class FileService {
         if (user == null) {
             throw new ErrorUnauthorized();
         }
-        if (user.getUserFiles().stream().noneMatch(x -> x.getFilename().equals(filename))) {
+        if (user.getUserFiles().stream().anyMatch(x -> x.getFilename().equals(filename))) {
             throw new ErrorInputData();
         }
         long deletedCount = fileRepository.deleteByUserAndFilename(user, filename);

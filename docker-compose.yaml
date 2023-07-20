@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  app:
+    image: cloudstoragefiles
+    build: ./
+    container_name: 'contcloudstoragefiles'
+    ports:
+      - "5050:5050"
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/CloudStorageFiles
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_LIQUIBASE_URL: jdbc:postgresql://database:5432/CloudStorageFiles
+      SPRING_LIQUIBASE_USER: postgres
+      SPRING_LIQUIBASE_PASSWORD: 1234
+
+  database:
+    image: postgres
+    container_name: 'CloudStorageFiles-db'
+    volumes:
+      - /resources/db/changelog
+      - /var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: CloudStorageFiles
+    ports:
+      - "5432:5432"
