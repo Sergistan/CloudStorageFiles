@@ -1,6 +1,6 @@
 FROM openjdk:17-jdk-slim
 
-EXPOSE 5500
+EXPOSE 5050
 
 ADD target/CloudStorageFiles-0.0.1-SNAPSHOT.jar backend.jar
 
