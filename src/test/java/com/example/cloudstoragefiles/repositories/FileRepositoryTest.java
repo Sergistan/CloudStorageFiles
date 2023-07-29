@@ -1,6 +1,8 @@
 package com.example.cloudstoragefiles.repositories;
 
 import com.example.cloudstoragefiles.models.File;
+import com.example.cloudstoragefiles.models.User;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -8,15 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.cloudstoragefiles.TestData.*;
 import static junit.framework.TestCase.assertTrue;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -29,42 +31,47 @@ class FileRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    private User savedUser;
+    private File savedFile;
+
     @BeforeEach
     void setUp() {
-        userRepository.deleteAll();
-        fileRepository.deleteAll();
-        userRepository.save(USER_1);
-        fileRepository.save(FILE_1);
-        fileRepository.save(TO_RENAME_FILE);
+        User user = new User(RandomUtils.nextLong(), "Random_login", "Random_password", null);
+        savedUser = userRepository.save(user);
+
+        File file = new File(RandomUtils.nextLong(), "Random_filename", LocalDateTime.now(), RandomUtils.nextLong(), "".getBytes(), savedUser);
+        savedFile = fileRepository.save(file);
     }
 
     @Test
     void deleteByUserAndFilename() {
-        File beforeDelete = fileRepository.findByUserAndFilename(USER_1, FILENAME_1);
+        File beforeDelete = fileRepository.findByUserAndFilename(savedUser, savedFile.getFilename());
         assertNotNull(beforeDelete);
-        fileRepository.deleteByUserAndFilename(USER_1, FILENAME_1);
-        File afterDelete = fileRepository.findByUserAndFilename(USER_1, FILENAME_1);
-        assertNull(afterDelete);
+        int deletedRows = fileRepository.deleteByUserAndFilename(savedUser, savedFile.getFilename());
+        Assert.assertEquals(deletedRows, 1);
     }
 
     @Test
     void findByUserAndFilename() {
-        assertEquals(FILE_1, fileRepository.findByUserAndFilename(USER_1, FILENAME_1));
+        assertEquals(savedFile, fileRepository.findByUserAndFilename(savedUser, savedFile.getFilename()));
     }
 
     @Test
     void editFileNameByUser() {
-        Optional<File> beforeEditName = fileRepository.findById(FILE_ID_TO_RENAME);
-        assertTrue(beforeEditName.isPresent());
-        assertEquals(TO_RENAME_FILENAME, beforeEditName.get().getFilename());
-        fileRepository.setNewFilenameByUserAndFilename(NEW_FILENAME, USER_1, TO_RENAME_FILENAME);
-        Optional<File> afterEditName = fileRepository.findById(FILE_ID_TO_RENAME);
+        File file = new File(RandomUtils.nextLong(), "Rename_filename", LocalDateTime.now(), RandomUtils.nextLong(), "".getBytes(), savedUser);
+        File savedFile = fileRepository.save(file);
+
+        int updatedRowCount = fileRepository.setNewFilenameByUserAndFilename("New_name", savedUser, savedFile.getFilename());
+        assertEquals(updatedRowCount, 1);
+
+        Optional<File> afterEditName = fileRepository.findById(savedFile.getId());
         assertTrue(afterEditName.isPresent());
-        assertEquals(NEW_FILENAME, afterEditName.get().getFilename());
+
+        assertEquals("New_name", afterEditName.get().getFilename());
     }
 
     @Test
     void findAllByUser() {
-        assertEquals(List.of(FILE_1, TO_RENAME_FILENAME), fileRepository.findAllByUser(USER_1));
+        assertEquals(List.of(savedFile), fileRepository.findAllByUser(savedUser));
     }
 }

@@ -17,7 +17,7 @@ public interface FileRepository extends JpaRepository<File, Long> {
 
     File findByUserAndFilename(User user, String filename);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE File f SET f.filename = ?1 WHERE f.user = ?2 AND f.filename = ?3")
-    void setNewFilenameByUserAndFilename(String newFilename, User user, String filename);
+    int setNewFilenameByUserAndFilename(String newFilename, User user, String filename);
 }

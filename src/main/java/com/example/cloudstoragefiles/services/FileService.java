@@ -7,6 +7,7 @@ import com.example.cloudstoragefiles.models.request.RequestEditFileName;
 import com.example.cloudstoragefiles.models.response.ResponseFile;
 import com.example.cloudstoragefiles.repositories.AuthRepository;
 import com.example.cloudstoragefiles.repositories.FileRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,7 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-    public void uploadFile(String authToken, String filename, MultipartFile multipartFile) {
+    public boolean uploadFile(String authToken, String filename, MultipartFile multipartFile) {
         User user = getUserByToken(authToken);
         if (user == null) {
             throw new ErrorUnauthorized();
@@ -40,6 +41,7 @@ public class FileService {
         } catch (IOException e) {
             throw new ErrorInputData();
         }
+        return true;
     }
 
     public void deleteFile(String authToken, String filename) {
@@ -47,7 +49,7 @@ public class FileService {
         if (user == null) {
             throw new ErrorUnauthorized();
         }
-        if (user.getUserFiles().stream().anyMatch(x -> x.getFilename().equals(filename))) {
+        if (StringUtils.isEmpty(filename)) {
             throw new ErrorInputData();
         }
         long deletedCount = fileRepository.deleteByUserAndFilename(user, filename);

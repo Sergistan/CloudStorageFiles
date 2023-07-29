@@ -2,7 +2,7 @@ package com.example.cloudstoragefiles.services;
 
 import com.example.cloudstoragefiles.exceptions.ErrorUnauthorized;
 import com.example.cloudstoragefiles.repositories.UserRepository;
-import com.github.dockerjava.api.exception.UnauthorizedException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import static com.example.cloudstoragefiles.TestData.*;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,7 +33,7 @@ class UserServiceTest {
 
     @Test
     void loadUserByUsername() {
-        assertEquals(USER_1, userService.loadUserByUsername(USERNAME_1));
+        Assertions.assertEquals(USER_1, userService.loadUserByUsername(USERNAME_1));
     }
 
     @Test

@@ -48,17 +48,28 @@ public class TestData {
     public static final byte[] TO_RENAME_FILE_CONTENT = TO_RENAME_FILENAME.getBytes();
     public static final File TO_RENAME_FILE = new File(FILE_ID_TO_RENAME, TO_RENAME_FILENAME, LocalDateTime.now(), TO_RENAME_SIZE, TO_RENAME_FILE_CONTENT, USER_1);
 
+    public static final Long FILE_ID_3 = 4L;
+    public static final String FILENAME_3 = "Filename_3";
+    public static final Long SIZE_4 = 400L;
+    public static final byte[] NULL_FILE_CONTENT = null;
+    public static final File FILE_WITH_NULL_FILE_CONTENT = new File(FILE_ID_3, FILENAME_3, LocalDateTime.now(), SIZE_4, NULL_FILE_CONTENT, USER_1);
+
+    public static final File FILE_NULL = null;
+    public static final String FILENAME_EMPTY = null;
     public static final String NEW_FILENAME = "New_Filename";
     public static final RequestEditFileName REQUEST_EDIT_FILE_NAME = new RequestEditFileName(NEW_FILENAME);
+    public static final RequestEditFileName REQUEST_EDIT_FILE_NAME_REPEAT = new RequestEditFileName(FILENAME_1);
 
     public static final MultipartFile MULTIPART_FILE = new MockMultipartFile(FILENAME_2, FILE_CONTENT_2);
 
     public static final List<File> FILE_LIST = List.of(FILE_1, FILE_2);
-
+    public static final List<File> FILE_LIST_NULL = null;
     public static final ResponseFile RESPONSE_FILE_1 = new ResponseFile(FILENAME_1, SIZE_1);
     public static final ResponseFile RESPONSE_FILE_2 = new ResponseFile(FILENAME_2, SIZE_2);
     public static final List<ResponseFile> RESPONSE_FILE_LIST = List.of(RESPONSE_FILE_1, RESPONSE_FILE_2);
+
     public static final Integer LIMIT = 100;
+    public static final Integer LIMIT_NULL = 0;
 
     public static final RequestAuth REQUEST_AUTH = new RequestAuth(USERNAME_1, PASSWORD_1);
     public static final ResponseJWT RESPONSE_JWT = new ResponseJWT(TOKEN_1);
