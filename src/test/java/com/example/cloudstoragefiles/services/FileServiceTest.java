@@ -46,7 +46,7 @@ public class FileServiceTest {
     }
 
     @Test
-    void uploadFileUnauthorized() {
+    void uploadFileUnauthorizedException() {
         assertThrows(ErrorUnauthorized.class, () -> fileService.uploadFile(TOKEN_1, FILENAME_1, MULTIPART_FILE));
     }
 
@@ -58,7 +58,7 @@ public class FileServiceTest {
     }
 
     @Test
-    void deleteFileUnauthorized() {
+    void deleteFileUnauthorizedException() {
         assertThrows(ErrorUnauthorized.class, () -> fileService.deleteFile(TOKEN_1, FILENAME_1));
     }
 
@@ -68,7 +68,7 @@ public class FileServiceTest {
     }
 
     @Test
-    void deleteFileErrorDeleteException() {
+    void errorDeleteFileException() {
         Mockito.when(fileRepository.deleteByUserAndFilename(USER_1, FILENAME_1)).thenReturn(0);
         assertThrows(ErrorDeleteFile.class, () -> fileService.deleteFile(BEARER_TOKEN, FILENAME_1));
     }
@@ -80,7 +80,7 @@ public class FileServiceTest {
     }
 
     @Test
-    void downloadFileUnauthorized() {
+    void downloadFileUnauthorizedException() {
         Mockito.when(fileRepository.findByUserAndFilename(USER_1, FILENAME_1)).thenReturn(FILE_1);
         assertThrows(ErrorUnauthorized.class, () -> fileService.downloadFile(TOKEN_1, FILENAME_1));
     }
@@ -100,25 +100,25 @@ public class FileServiceTest {
     @Test
     void editFileName() {
         Mockito.when(fileRepository.findByUserAndFilename(USER_1, FILENAME_1)).thenReturn(FILE_1);
-        fileService.editFile(BEARER_TOKEN, FILENAME_1, REQUEST_EDIT_FILE_NAME);
+        fileService.editFileName(BEARER_TOKEN, FILENAME_1, REQUEST_EDIT_FILE_NAME);
         Mockito.verify(fileRepository, Mockito.times(1)).setNewFilenameByUserAndFilename(NEW_FILENAME, USER_1, FILENAME_1);
     }
 
     @Test
-    void editFileNameUnauthorized() {
-        assertThrows(ErrorUnauthorized.class, () -> fileService.editFile(TOKEN_1, FILENAME_1, REQUEST_EDIT_FILE_NAME));
+    void editFileNameUnauthorizedException() {
+        assertThrows(ErrorUnauthorized.class, () -> fileService.editFileName(TOKEN_1, FILENAME_1, REQUEST_EDIT_FILE_NAME));
     }
 
     @Test
     void editFileNameInputDataException() {
         Mockito.when(fileRepository.findByUserAndFilename(USER_1, FILENAME_1)).thenReturn(FILE_NULL);
-        assertThrows(ErrorInputData.class, () -> fileService.editFile(BEARER_TOKEN, FILENAME_1, REQUEST_EDIT_FILE_NAME));
+        assertThrows(ErrorInputData.class, () -> fileService.editFileName(BEARER_TOKEN, FILENAME_1, REQUEST_EDIT_FILE_NAME));
     }
 
     @Test
-    void editFileNameErrorUploadFileException() {
+    void editFileNameErrorUploadException() {
         Mockito.when(fileRepository.findByUserAndFilename(USER_1, FILENAME_1)).thenReturn(FILE_1);
-        assertThrows(ErrorUploadFile.class, () -> fileService.editFile(BEARER_TOKEN, FILENAME_1, REQUEST_EDIT_FILE_NAME_REPEAT));
+        assertThrows(ErrorUploadFile.class, () -> fileService.editFileName(BEARER_TOKEN, FILENAME_1, REQUEST_EDIT_FILE_NAME_REPEAT));
     }
 
     @Test
@@ -128,7 +128,7 @@ public class FileServiceTest {
     }
 
     @Test
-    void getAllFilesUnauthorized() {
+    void getAllFilesUnauthorizedException() {
         Mockito.when(fileRepository.findAllByUser(USER_1)).thenReturn(FILE_LIST);
         assertThrows(ErrorUnauthorized.class, () -> fileService.getAllFiles(TOKEN_1, LIMIT));
     }
@@ -139,7 +139,7 @@ public class FileServiceTest {
     }
 
     @Test
-    void getAllFilesErrorGettingFileList() {
+    void getAllFilesErrorGettingFileListException() {
         Mockito.when(fileRepository.findAllByUser(USER_1)).thenReturn(FILE_LIST_NULL);
         assertThrows(ErrorGettingFileList.class, () -> fileService.getAllFiles(BEARER_TOKEN, LIMIT));
     }

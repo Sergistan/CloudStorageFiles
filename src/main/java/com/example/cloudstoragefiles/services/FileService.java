@@ -74,7 +74,7 @@ public class FileService {
         return fileContent;
     }
 
-    public void editFile(String authToken, String filename, RequestEditFileName requestEditFileName) {
+    public void editFileName(String authToken, String filename, RequestEditFileName requestEditFileName) {
         User user = getUserByToken(authToken);
         if (user == null) {
             throw new ErrorUnauthorized();

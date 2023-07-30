@@ -42,12 +42,6 @@ public class TestData {
     public static final byte[] FILE_CONTENT_2 = FILENAME_2.getBytes();
     public static final File FILE_2 = new File(FILE_ID_2, FILENAME_2, LocalDateTime.now(), SIZE_2, FILE_CONTENT_2, USER_2);
 
-    public static final Long FILE_ID_TO_RENAME = 3L;
-    public static final String TO_RENAME_FILENAME = "Rename_Filename";
-    public static final Long TO_RENAME_SIZE = 300L;
-    public static final byte[] TO_RENAME_FILE_CONTENT = TO_RENAME_FILENAME.getBytes();
-    public static final File TO_RENAME_FILE = new File(FILE_ID_TO_RENAME, TO_RENAME_FILENAME, LocalDateTime.now(), TO_RENAME_SIZE, TO_RENAME_FILE_CONTENT, USER_1);
-
     public static final Long FILE_ID_3 = 4L;
     public static final String FILENAME_3 = "Filename_3";
     public static final Long SIZE_4 = 400L;

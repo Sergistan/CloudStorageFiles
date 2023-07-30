@@ -40,12 +40,12 @@ class CloudStorageFilesApplicationTests {
             .dependsOn(databaseContainer);
 
     @Test
-    void contextDatabase() {
+    void contextDatabaseIsRunning() {
         Assertions.assertTrue(databaseContainer.isRunning());
     }
 
     @Test
-    void contextServer() {
+    void contextServerIsRunning() {
         Assertions.assertFalse(serverContainer.isRunning());
     }
 

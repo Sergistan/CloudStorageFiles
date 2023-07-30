@@ -29,12 +29,12 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByUsername() {
+    void findUserByLogin() {
         assertEquals("Random_login", userRepository.findUserByLogin("Random_login").getLogin());
     }
 
     @Test
-    void notFindByUsername() {
+    void notFindUserByLogin() {
         assertNull(userRepository.findUserByLogin(USERNAME_2));
     }
 }

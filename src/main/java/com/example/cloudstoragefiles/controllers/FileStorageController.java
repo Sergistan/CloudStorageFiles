@@ -42,7 +42,7 @@ public class FileStorageController {
 
     @PutMapping("/file")
     public ResponseEntity<?> editFile(@RequestHeader("auth-token") String authToken, @RequestParam("filename") String filename, @RequestBody RequestEditFileName requestEditFileName) {
-        fileService.editFile(authToken, filename, requestEditFileName);
+        fileService.editFileName(authToken, filename, requestEditFileName);
         return new ResponseEntity<>("Edit file name", HttpStatus.OK);
     }
 

@@ -37,7 +37,7 @@ class UserServiceTest {
     }
 
     @Test
-    void loadUserByUsernameUnauthorized() {
+    void loadUserByUsernameUnauthorizedException() {
         assertThrows(ErrorUnauthorized.class, () -> userService.loadUserByUsername(USERNAME_2));
     }
 }

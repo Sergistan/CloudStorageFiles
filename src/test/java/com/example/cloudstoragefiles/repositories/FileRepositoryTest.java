@@ -57,7 +57,7 @@ class FileRepositoryTest {
     }
 
     @Test
-    void editFileNameByUser() {
+    void setNewFilenameByUserAndFilename() {
         File file = new File(RandomUtils.nextLong(), "Rename_filename", LocalDateTime.now(), RandomUtils.nextLong(), "".getBytes(), savedUser);
         File savedFile = fileRepository.save(file);
 
